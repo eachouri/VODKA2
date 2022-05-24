@@ -13,7 +13,7 @@ This is the VODKA2.0 beta version that was used to analyze data in S. Felt, et a
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-1. Generate VODKA2 multifata copy-back viral genome database
+1- Generate VODKA2 multifata copy-back viral genome database
 
     perl VODKA2_genomefa_to_newfasta_CB_v2.0b.pl <genomefa> <nb_from_right> <read_length> <newfasta_name>
 
@@ -22,14 +22,14 @@ This is the VODKA2.0 beta version that was used to analyze data in S. Felt, et a
 * \<read_length\> Read length of samples intended to be analysed using the current db (can be greater value than the actual sample read length)
 * \<newfasta_name\> Name of the multifata file to be generated. Should be as <virus>.<nb_from_right>.<read_length>.fasta
 
-2. Build bowtie2 index
+2- Build bowtie2 index
 
     bowtie2-build --large-index <newfasta_name> <b2_idx>
 
 * \<newfasta_name\> Name of the multifata file to be generated. Should be as <virus>.<nb_from_right>.<read_length>.fasta
 * \<bt2_idx\>  Name of VODKA2 DB index for Bowtie2
 
-3. Run VODAK2 analysis setup script
+3- Run VODAK2 analysis setup script
 
     bash VODKA2_analysis_setup_v2.0b.sh [-h] -f <files.txt> -d <bt2_idx> -p <project> [options]
 
@@ -43,13 +43,13 @@ options:
   * -l \<on|off\> LSF on or off (default: on)
   * -h  Show this help text and exit
 
-4. Run VODKA2 analysis
+4- Run VODKA2 analysis
 
     bash cbVG_VODKA2_analysis_<project>_v2.0b.sh
 
 * replace \<project\> with the project name specified in step 3.
 
-5. Generate extra report by sample
+5- Generate extra report by sample
 
     bash vodka_extra-info_v2.sh -s <samplename> -p <project> -t CB -n <N> -a <genome_annotation.txt>
 
