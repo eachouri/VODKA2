@@ -80,6 +80,23 @@ sort ${sample}.blast > ${sample}.blast.sorted
 # count number of ranges (e.g. DVG with 3 ranges " 3 B_R(B_R)")
 cut -f 1 ${sample}.blast.sorted | uniq -c > ${sample}.blast.counts
 # store list of ranges values (1,2,3,4,17)
+if [[ ! $(less ${sample}.blast.counts | grep -Eoh "^ +[0-9]+ " | tr -d " " | sort -n | uniq | grep -v ^1$) ]]; then
+  # print report
+  n=$(( $(wc -l ${SAMPLETXT} | cut -d " " -f 1) - 1 ))
+  echo " * Found 0 ${DVGTYPE} DVG \"junctions\" (supported by 0 DVG reads) *"
+  echo "VODKA detected ${n} DVG reads."
+  echo "Blast reported 2 ranges for 0 DVG."
+
+  # delete intermediate files
+  rm ${sample}.blast.*
+  rm ${samplefa} ${SAMPLETXT}
+
+  echo
+  echo "Finished."
+  echo
+
+  exit 0
+fi
 less ${sample}.blast.counts | grep -Eoh "^ +[0-9]+ " | tr -d " " | sort -n | uniq | grep -v ^1$ > ${sample}.blast.uniq.ranges
 # keep only DVG with at least 2 ranges
 less ${sample}.blast.counts | sed  "s/^ *//" | sort -n -k 1 | grep -v "^1 " > ${sample}.blast.junctions
@@ -191,7 +208,7 @@ n=$(( $(wc -l ${SAMPLETXT} | cut -d " " -f 1) - 1 ))
 r2=$(wc -l ${sample}.blast.junctions.2 | cut -d " " -f 1)
 vodkajunc=$(( $(wc -l ${sample}.2ranges.confirm.list.txt | cut -d " " -f 1) - 1 ))
 reads=$(( $(wc -l ${sample}.2ranges.confirm.vodka.txt | cut -d " "  -f 1) - 1 ))
-echo " * Found ${vodkajunc} ${DVGTYPE} DVG \"junctions (supported by ${reads} DVG reads) *"
+echo " * Found ${vodkajunc} ${DVGTYPE} DVG \"junctions\" (supported by ${reads} DVG reads) *"
 echo "VODKA detected ${n} DVG reads."
 echo "Blast reported 2 ranges for ${r2} DVG."
 
